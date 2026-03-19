@@ -32,7 +32,7 @@ export class CuaDashboard {
 
         const brand = document.createElement('div');
         brand.className = 'cua-nav-brand';
-        brand.innerHTML = CUA_LOGO_SVG + '<span>cua</span>';
+        brand.innerHTML = CUA_LOGO_SVG;
         nav.appendChild(brand);
 
         const tabs = document.createElement('div');
@@ -52,8 +52,8 @@ export class CuaDashboard {
         const hash = location.hash.replace(/^#!/, '');
         const parsedQuery = new URLSearchParams(hash);
         const currentAction = parsedQuery.get('action') || '';
-        // Carry the ws proxy URL across tab navigations
-        const wsUrl = parsedQuery.get('ws') || '';
+        // Carry the ws proxy URL across tab navigations — prefer hash, fall back to sessionStorage
+        const wsUrl = parsedQuery.get('ws') || sessionStorage.getItem('cua-ws-url') || '';
 
         tabs.innerHTML = '';
 
@@ -104,6 +104,8 @@ export class CuaDashboard {
         if (loadingEl) {
             loadingEl.remove();
         }
+        // Persist ws URL so tab navigation works without it in the hash
+        sessionStorage.setItem('cua-ws-url', wsUrl);
         const params = new URLSearchParams();
         params.set('action', 'stream');
         params.set('udid', udid);
