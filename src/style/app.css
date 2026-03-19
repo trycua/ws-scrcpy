@@ -1,54 +1,26 @@
 :root {
-    --main-bg-color: hsl(0, 0%, 100%);
-    --stream-bg-color: hsl(0, 0%, 85%);
-    --shell-bg-color: hsl(0, 0%, 0%);
-    --text-shadow-color: hsl(218, 67%, 95%);
-    --header-bg-color: hsl(0, 0%, 95%);
-    --controls-bg-color: hsla(0, 0%, 95%, 0.8);
-    --control-buttons-bg-color: hsl(0, 0%, 95%);
-    --text-color: hsl(210, 16%, 22%);
-    --text-color-light: hsl(200, 16%, 52%);
-    --link-color: hsl(218, 85%, 43%);
-    --link-color-light: hsl(218, 85%, 73%);
-    --link-color_visited: hsl(271, 68%, 32%);
-    --link-color_visited-light: hsl(271, 68%, 72%);
-    --svg-checkbox-bg-color: hsl(172, 100%, 37%);
-    --svg-button-fill: hsl(199, 17%, 46%);
-    --kill-button-hover-color: hsl(342, 100%, 37%);
-    --url-color: hsl(0, 0%, 60%);
-    --button-text-color: hsl(214, 82%, 51%);
-    --button-border-color: hsl(0, 0%, 70%);
-    --progress-background-color: hsla(225, 100%, 50%, 0.2);
-    --progress-background-error-color: hsla(0, 100%, 50%, 0.2);
+    --main-bg-color: #0a0c10;
+    --stream-bg-color: #0a0c10;
+    --shell-bg-color: #000000;
+    --text-shadow-color: #0a0c10;
+    --header-bg-color: #12161b;
+    --controls-bg-color: rgba(18, 22, 27, 0.85);
+    --control-buttons-bg-color: #12161b;
+    --text-color: #f6f8fb;
+    --text-color-light: #6b7380;
+    --link-color: #61bcff;
+    --link-color-light: rgba(97,188,255,0.55);
+    --link-color_visited: #a78bfa;
+    --link-color_visited-light: rgba(167,139,250,0.55);
+    --svg-checkbox-bg-color: #52d37f;
+    --svg-button-fill: #f6f8fb;
+    --kill-button-hover-color: #ff5f73;
+    --url-color: #6b7380;
+    --button-text-color: #61bcff;
+    --button-border-color: rgba(255,255,255,0.18);
+    --progress-background-color: rgba(97,188,255,0.15);
+    --progress-background-error-color: rgba(255,95,115,0.15);
     --font-size: 14px;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --main-bg-color: hsl(0, 0%, 14%);
-        --stream-bg-color: hsl(0, 0%, 20%);
-        --shell-bg-color: hsl(0, 0%, 0%);
-        --text-shadow-color: hsl(218, 17%, 18%);
-        --header-bg-color: hsl(0, 0%, 20%);
-        --controls-bg-color: hsla(201, 18%, 19%, 0.8);
-        --control-buttons-bg-color: hsl(201, 18%, 19%);
-        --text-color: hsl(0, 0%, 90%);
-        --text-color-light: hsl(0, 0%, 60%);
-        --link-color: hsl(218, 63%, 70%);
-        --link-color-light: hsl(218, 63%, 50%);
-        --link-color_visited: hsl(267, 31%, 47%);
-        --link-color_visited-light: hsl(267, 31%, 27%);
-        --svg-checkbox-bg-color: hsl(172, 100%, 27%);
-        --svg-button-fill: hsl(0, 0%, 100%);
-        --kill-button-hover-color: hsl(342, 100%, 27%);
-        --url-color: hsl(0, 0%, 60%);
-        --device-list-stripe-color: hsl(0, 0%, 16%);
-        --device-list-default-color: hsl(0, 0%, 14%);
-        --button-text-color: hsl(214, 82%, 76%);
-        --button-border-color: hsl(213, 5%, 39%);
-        --progress-background-color: hsla(225, 100%, 50%, 0.2);
-        --progress-background-error-color: hsla(0, 100%, 50%, 0.2);
-    }
 }
 
 html {
@@ -72,7 +44,6 @@ body {
     width: 100%;
     overflow: hidden;
 }
-
 
 body.shell {
     background-color: var(--shell-bg-color);
@@ -123,7 +94,6 @@ body.stream {
     max-width: 100%;
     background-color: #000000;
 }
-
 
 .control-buttons-list {
     float: right;

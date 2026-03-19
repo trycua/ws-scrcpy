@@ -2,11 +2,15 @@ import '../style/app.css';
 import { StreamClientScrcpy } from './googDevice/client/StreamClientScrcpy';
 import { HostTracker } from './client/HostTracker';
 import { Tool } from './client/Tool';
+import { CuaDashboard } from './ui/CuaDashboard';
 
 window.onload = async function (): Promise<void> {
     const hash = location.hash.replace(/^#!/, '');
     const parsedQuery = new URLSearchParams(hash);
     const action = parsedQuery.get('action');
+    const udid = parsedQuery.get('udid') || undefined;
+
+    CuaDashboard.injectNavbar(udid);
 
     /// #if USE_BROADWAY
     const { BroadwayPlayer } = await import('./player/BroadwayPlayer');
@@ -108,5 +112,12 @@ window.onload = async function (): Promise<void> {
             DeviceTracker.registerTool(tool);
         });
     }
-    HostTracker.start();
+
+    // If no recognized action in the hash, auto-connect via WebSocket device list
+    const knownActions = ['stream', 'shell', 'devtools', 'list-files'];
+    if (!action || action === 'goog-device-list' || !knownActions.includes(action)) {
+        CuaDashboard.autoConnect();
+    } else {
+        HostTracker.start();
+    }
 };

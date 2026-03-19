@@ -1,19 +1,9 @@
 :root {
-    --device-border-color: hsl(0, 0%, 82%);
-    --device-list-stripe-color: hsl(0, 0%, 96%);
-    --device-list-default-color: hsl(0, 0%, 100%);
-    --device-list-hover-color: hsl(218, 67%, 95%);
+    --device-border-color: rgba(255,255,255,0.1);
+    --device-list-stripe-color: #0e1116;
+    --device-list-default-color: #12161b;
+    --device-list-hover-color: #1a2030;
 }
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --device-border-color: hsl(0, 0%, 32%);
-        --device-list-stripe-color: hsl(0, 0%, 16%);
-        --device-list-default-color: hsl(0, 0%, 14%);
-        --device-list-hover-color: hsl(218, 17%, 18%);
-    }
-}
-
 
 body.list {
     height: auto;
@@ -98,7 +88,7 @@ body.list #device_list_menu {
 
 #devices .device-state {
     border-radius: 25px;
-    background-color: red;
+    background-color: #ff5f73;
     font-size: 80%;
     margin-left: 6px;
     width: 1em;
@@ -106,7 +96,7 @@ body.list #device_list_menu {
 }
 
 #devices .device.active .device-state {
-    background-color: green;
+    background-color: #52d37f;
 }
 
 #devices .device-list {
@@ -139,7 +129,7 @@ body.list #device_list_menu {
 }
 
 #devices .device-list div.device:hover select {
-    background-color: var(--device-list-hover-color);;
+    background-color: var(--device-list-hover-color);
 }
 
 #devices .device-list div.desc-block {
