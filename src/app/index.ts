@@ -106,18 +106,18 @@ window.onload = async function (): Promise<void> {
     tools.push(FileListingClient);
     /// #endif
 
+    const { DeviceTracker } = await import('./googDevice/client/DeviceTracker');
     if (tools.length) {
-        const { DeviceTracker } = await import('./googDevice/client/DeviceTracker');
         tools.forEach((tool) => {
             DeviceTracker.registerTool(tool);
         });
     }
 
-    // If no recognized action in the hash, auto-connect via WebSocket device list
+    // If no recognized action in the hash, enable auto-connect via HostTracker (multiplexer protocol)
     const knownActions = ['stream', 'shell', 'devtools', 'list-files'];
     if (!action || action === 'goog-device-list' || !knownActions.includes(action)) {
-        CuaDashboard.autoConnect();
-    } else {
-        HostTracker.start();
+        CuaDashboard.autoConnectEnabled = true;
+        CuaDashboard.showLoading();
     }
+    HostTracker.start();
 };

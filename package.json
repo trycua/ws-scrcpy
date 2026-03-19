@@ -71,5 +71,8 @@
   },
   "optionalDependencies": {
     "appium-xcuitest-driver": "^3.62.0"
+  },
+  "ts-node": {
+    "transpileOnly": true
   }
 }

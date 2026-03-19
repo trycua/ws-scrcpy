@@ -15,6 +15,7 @@ import { ParamsDeviceTracker } from '../../../types/ParamsDeviceTracker';
 import { HostItem } from '../../../types/Configuration';
 import { ChannelCode } from '../../../common/ChannelCode';
 import { Tool } from '../../client/Tool';
+import { CuaDashboard } from '../../ui/CuaDashboard';
 
 type Field = keyof GoogDeviceDescriptor | ((descriptor: GoogDeviceDescriptor) => string);
 type DescriptionColumn = { title: string; field: Field };
@@ -171,11 +172,15 @@ export class DeviceTracker extends BaseDeviceTracker<GoogDeviceDescriptor, never
     }
 
     protected buildDeviceRow(tbody: Element, device: GoogDeviceDescriptor): void {
+        const isActive = device.state === DeviceState.DEVICE;
+        if (CuaDashboard.autoConnectEnabled && isActive) {
+            CuaDashboard.onDeviceFound(device.udid);
+            return;
+        }
         let selectedInterfaceUrl = '';
         let selectedInterfaceName = '';
         const blockClass = 'desc-block';
         const fullName = `${this.id}_${Util.escapeUdid(device.udid)}`;
-        const isActive = device.state === DeviceState.DEVICE;
         let hasPid = false;
         const servicesId = `device_services_${fullName}`;
         const row = html`<div class="device ${isActive ? 'active' : 'not-active'}">

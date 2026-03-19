@@ -13,8 +13,14 @@ const TABS: TabDef[] = [
     { label: 'List Files', action: 'list-files' },
 ];
 
+const CUA_LOGO_SVG = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="28" height="28" rx="6" fill="#61bcff" fill-opacity="0.15"/>
+  <path d="M7 14C7 10.134 10.134 7 14 7C16.209 7 18.181 8.014 19.485 9.6L17.6 11.2C16.74 10.138 15.447 9.5 14 9.5C11.515 9.5 9.5 11.515 9.5 14C9.5 16.485 11.515 18.5 14 18.5C15.447 18.5 16.74 17.862 17.6 16.8L19.485 18.4C18.181 19.986 16.209 21 14 21C10.134 21 7 17.866 7 14Z" fill="#61bcff"/>
+</svg>`;
+
 export class CuaDashboard {
     private static navInjected = false;
+    static autoConnectEnabled = false;
 
     static injectNavbar(udid?: string): void {
         if (CuaDashboard.navInjected) {
@@ -28,7 +34,7 @@ export class CuaDashboard {
 
         const brand = document.createElement('div');
         brand.className = 'cua-nav-brand';
-        brand.textContent = 'cua';
+        brand.innerHTML = CUA_LOGO_SVG + '<span>cua</span>';
         nav.appendChild(brand);
 
         const tabs = document.createElement('div');
@@ -80,68 +86,26 @@ export class CuaDashboard {
         });
     }
 
-    static init(): void {
-        const hash = location.hash.replace(/^#!/, '');
-        const parsedQuery = new URLSearchParams(hash);
-        const action = parsedQuery.get('action');
-        const udid = parsedQuery.get('udid') || undefined;
-
-        CuaDashboard.injectNavbar(udid);
-
-        const knownActions = TABS.map((t) => t.action);
-        const needsAutoConnect = !action || action === 'goog-device-list' || !knownActions.includes(action);
-
-        if (needsAutoConnect) {
-            CuaDashboard.autoConnect();
+    /** Called by DeviceTracker.buildDeviceRow when the first active device is found. */
+    static onDeviceFound(udid: string): void {
+        const loadingEl = document.getElementById('cua-loading');
+        if (loadingEl) {
+            loadingEl.remove();
         }
+        const params = new URLSearchParams();
+        params.set('action', 'stream');
+        params.set('udid', udid);
+        params.set('player', 'broadway');
+        location.hash = `!${params.toString()}`;
+        location.reload();
     }
 
-    static autoConnect(): void {
-        const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const port = location.port || '8080';
-        const wsUrl = `${protocol}//${location.hostname}:${port}${location.pathname}?action=goog-device-list`;
-
+    static showLoading(): void {
+        const existing = document.getElementById('cua-loading');
+        if (existing) return;
         const loadingEl = document.createElement('div');
         loadingEl.id = 'cua-loading';
         loadingEl.innerHTML = '<span>Connecting to device...</span>';
         document.body.appendChild(loadingEl);
-
-        let ws: WebSocket;
-        try {
-            ws = new WebSocket(wsUrl);
-        } catch (e) {
-            loadingEl.innerHTML = '<span>Failed to connect to device server.</span>';
-            return;
-        }
-
-        ws.onmessage = (event: MessageEvent) => {
-            try {
-                const msg = JSON.parse(event.data);
-                if (msg.type === 'devicelist' && Array.isArray(msg.data) && msg.data.length > 0) {
-                    const device = msg.data.find((d: any) => d.state === 'device') || msg.data[0];
-                    if (device && device.udid) {
-                        ws.close();
-                        const params = new URLSearchParams();
-                        params.set('action', 'stream');
-                        params.set('udid', device.udid);
-                        params.set('player', 'broadway');
-                        location.hash = `!${params.toString()}`;
-                        location.reload();
-                    }
-                }
-            } catch (_) {
-                // ignore parse errors
-            }
-        };
-
-        ws.onerror = () => {
-            loadingEl.innerHTML = '<span>Error connecting to device server.</span>';
-        };
-
-        ws.onclose = () => {
-            if (document.getElementById('cua-loading')) {
-                loadingEl.innerHTML = '<span>Connection closed. No devices found.</span>';
-            }
-        };
     }
 }
