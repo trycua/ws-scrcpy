@@ -140,7 +140,7 @@ export class HttpServer extends TypedEmitter<HttpServerEvents> implements Servic
                                     .filter(([k]) => k !== 'password')
                               ).toString()
                             : '');
-                        res.setHeader('Set-Cookie', `${AUTH_COOKIE}=${makeToken(VNC_PASSWORD)}; Path=/; HttpOnly; SameSite=Lax`);
+                        res.setHeader('Set-Cookie', `${AUTH_COOKIE}=${makeToken(VNC_PASSWORD)}; Path=/; HttpOnly; SameSite=None; Secure`);
                         res.redirect(302, clean || '/');
                         return;
                     }
