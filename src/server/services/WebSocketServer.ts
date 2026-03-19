@@ -1,7 +1,7 @@
 import { Server as WSServer } from 'ws';
 import WS from 'ws';
 import { Service } from './Service';
-import { HttpServer, ServerAndPort } from './HttpServer';
+import { HttpServer, ServerAndPort, isAuthorized } from './HttpServer';
 import { MwFactory } from '../mw/Mw';
 
 export class WebSocketServer implements Service {
@@ -33,6 +33,10 @@ export class WebSocketServer implements Service {
         const TAG = `WebSocket Server {tcp:${port}}`;
         const wss = new WSServer({ server });
         wss.on('connection', async (ws: WS, request) => {
+            if (!isAuthorized(request.headers['cookie'])) {
+                ws.close(4003, `[${TAG}] Unauthorized`);
+                return;
+            }
             if (!request.url) {
                 ws.close(4001, `[${TAG}] Invalid url`);
                 return;
