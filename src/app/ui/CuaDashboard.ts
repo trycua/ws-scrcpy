@@ -40,6 +40,11 @@ export class CuaDashboard {
         tabs.className = 'cua-nav-tabs';
         nav.appendChild(tabs);
 
+        const controls = document.createElement('div');
+        controls.id = 'cua-nav-controls';
+        controls.className = 'cua-nav-controls';
+        nav.appendChild(controls);
+
         document.body.insertBefore(nav, document.body.firstChild);
 
         CuaDashboard.updateNavbar(udid);
@@ -56,6 +61,8 @@ export class CuaDashboard {
         const wsUrl = parsedQuery.get('ws') || sessionStorage.getItem('cua-ws-url') || '';
 
         tabs.innerHTML = '';
+        const controls = document.getElementById('cua-nav-controls');
+        if (controls) controls.innerHTML = '';
 
         TABS.forEach((tab) => {
             if (!udid) {
@@ -95,6 +102,42 @@ export class CuaDashboard {
 
             tabs.appendChild(a);
         });
+
+        // Renderer dropdown — only shown on Device (stream) tab
+        if (udid && currentAction === 'stream' && controls) {
+            const currentPlayer = parsedQuery.get('player') || 'broadway';
+            const PLAYERS = [
+                { code: 'broadway', label: 'Broadway.js' },
+                { code: 'webcodecs', label: 'WebCodecs' },
+                { code: 'mse', label: 'H264 Converter' },
+                { code: 'tinyh264', label: 'Tiny H264' },
+            ];
+
+            const label = document.createElement('span');
+            label.className = 'cua-nav-renderer-label';
+            label.textContent = 'Renderer';
+            controls.appendChild(label);
+
+            const select = document.createElement('select');
+            select.className = 'cua-nav-renderer-select';
+            PLAYERS.forEach(({ code, label: name }) => {
+                const opt = document.createElement('option');
+                opt.value = code;
+                opt.textContent = name;
+                if (code === currentPlayer) opt.selected = true;
+                select.appendChild(opt);
+            });
+            select.addEventListener('change', () => {
+                const params = new URLSearchParams();
+                params.set('action', 'stream');
+                params.set('udid', udid);
+                params.set('player', select.value);
+                if (wsUrl) params.set('ws', wsUrl);
+                location.hash = `!${params.toString()}`;
+                location.reload();
+            });
+            controls.appendChild(select);
+        }
     }
 
     /** Called by DeviceTracker.buildDeviceRow when the first active device is found.
