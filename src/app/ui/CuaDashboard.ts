@@ -1,4 +1,6 @@
 import '../../style/cua-dashboard.css';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const CUA_LOGO_SVG: string = require('../../public/images/cua-logo.svg');
 
 interface TabDef {
     label: string;
@@ -13,7 +15,6 @@ const TABS: TabDef[] = [
     { label: 'List Files', action: 'list-files' },
 ];
 
-const CUA_LOGO_HTML = `<img src="/images/cua-logo.svg" class="cua-nav-logo" alt="cua" />`;
 
 export class CuaDashboard {
     private static navInjected = false;
@@ -31,7 +32,7 @@ export class CuaDashboard {
 
         const brand = document.createElement('div');
         brand.className = 'cua-nav-brand';
-        brand.innerHTML = CUA_LOGO_HTML + '<span>cua</span>';
+        brand.innerHTML = CUA_LOGO_SVG + '<span>cua</span>';
         nav.appendChild(brand);
 
         const tabs = document.createElement('div');
@@ -78,12 +79,19 @@ export class CuaDashboard {
 
             const a = document.createElement('a');
             a.className = 'cua-nav-tab';
-            a.href = `#!${params.toString()}`;
+            a.href = '#';
             a.textContent = tab.label;
 
             if (currentAction === tab.action) {
                 a.classList.add('active');
             }
+
+            const hash = `!${params.toString()}`;
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                location.hash = hash;
+                location.reload();
+            });
 
             tabs.appendChild(a);
         });
