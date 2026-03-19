@@ -174,7 +174,9 @@ export class DeviceTracker extends BaseDeviceTracker<GoogDeviceDescriptor, never
     protected buildDeviceRow(tbody: Element, device: GoogDeviceDescriptor): void {
         const isActive = device.state === DeviceState.DEVICE;
         if (CuaDashboard.autoConnectEnabled && isActive) {
-            CuaDashboard.onDeviceFound(device.udid);
+            // Use the same ws proxy URL the original UI would generate for this device
+            const wsUrl = DeviceTracker.createUrl(this.params, device.udid).toString();
+            CuaDashboard.onDeviceFound(device.udid, wsUrl);
             return;
         }
         let selectedInterfaceUrl = '';
