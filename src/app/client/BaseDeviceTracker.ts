@@ -9,6 +9,7 @@ import { HostItem } from '../../types/Configuration';
 import { Tool } from './Tool';
 import Util from '../Util';
 import { EventMap } from '../../common/TypedEmitter';
+import { CuaDashboard } from '../ui/CuaDashboard';
 
 const TAG = '[BaseDeviceTracker]';
 
@@ -202,7 +203,7 @@ export abstract class BaseDeviceTracker<DD extends BaseDeviceDescriptor, TE exte
             devices = document.createElement('div');
             devices.id = id;
             devices.className = 'table-wrapper';
-            document.body.appendChild(devices);
+            CuaDashboard.getContentRoot().appendChild(devices);
         }
         return devices;
     }

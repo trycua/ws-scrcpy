@@ -1,4 +1,5 @@
 import '../../../style/devtools.css';
+import { CuaDashboard } from '../../ui/CuaDashboard';
 import { ManagerClient } from '../../client/ManagerClient';
 import { ACTION } from '../../../common/Action';
 import { ParamsDevtools } from '../../../types/ParamsDevtools';
@@ -36,12 +37,12 @@ export class DevtoolsClient extends ManagerClient<ParamsDevtools, never> {
         this.hiddenInput = document.createElement('input');
         this.hiddenInput.className = 'hidden';
         this.hiddenInput.setAttribute('hidden', 'hidden');
-        document.body.appendChild(this.hiddenInput);
+        CuaDashboard.getContentRoot().appendChild(this.hiddenInput);
         this.tooltip = document.createElement('span');
         this.tooltip.innerText = 'Copied!';
         this.tooltip.className = 'tooltip';
         this.tooltip.style.display = 'none';
-        document.body.appendChild(this.tooltip);
+        CuaDashboard.getContentRoot().appendChild(this.tooltip);
     }
 
     public static parseParameters(params: URLSearchParams): ParamsDevtools {
@@ -348,7 +349,7 @@ export class DevtoolsClient extends ManagerClient<ParamsDevtools, never> {
         if (old) {
             old.parentElement?.replaceChild(block, old);
         } else {
-            document.body.appendChild(block);
+            CuaDashboard.getContentRoot().appendChild(block);
         }
     }
 

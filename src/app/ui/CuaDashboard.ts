@@ -20,6 +20,13 @@ export class CuaDashboard {
     private static navInjected = false;
     static autoConnectEnabled = false;
 
+    static getContentRoot(): HTMLElement {
+        const existing = document.getElementById('cua-content');
+        if (existing) return existing;
+        // Fallback before injectNavbar has run (shouldn't normally happen)
+        return document.body;
+    }
+
     static injectNavbar(udid?: string): void {
         if (CuaDashboard.navInjected) {
             CuaDashboard.updateNavbar(udid);
@@ -45,7 +52,11 @@ export class CuaDashboard {
         controls.className = 'cua-nav-controls';
         nav.appendChild(controls);
 
-        document.body.insertBefore(nav, document.body.firstChild);
+        document.body.appendChild(nav);
+
+        const content = document.createElement('div');
+        content.id = 'cua-content';
+        document.body.appendChild(content);
 
         CuaDashboard.updateNavbar(udid);
     }
@@ -164,6 +175,6 @@ export class CuaDashboard {
         const loadingEl = document.createElement('div');
         loadingEl.id = 'cua-loading';
         loadingEl.innerHTML = '<span>Connecting to device...</span>';
-        document.body.appendChild(loadingEl);
+        CuaDashboard.getContentRoot().appendChild(loadingEl);
     }
 }

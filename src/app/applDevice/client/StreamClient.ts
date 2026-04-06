@@ -1,4 +1,5 @@
 import { BaseClient } from '../../client/BaseClient';
+import { CuaDashboard } from '../../ui/CuaDashboard';
 import { ParamsStream } from '../../../types/ParamsStream';
 import { SimpleInteractionHandler } from '../../interactionHandler/SimpleInteractionHandler';
 import { BasePlayer, PlayerClass } from '../../player/BasePlayer';
@@ -233,7 +234,7 @@ export abstract class StreamClient<T extends ParamsStream> extends BaseClient<T,
         player.setParent(this.videoWrapper);
         player.on('input-video-resize', this.onInputVideoResize);
 
-        document.body.appendChild(deviceView);
+        CuaDashboard.getContentRoot().appendChild(deviceView);
         const bounds = this.getMaxSize(controlButtons);
         if (bounds) {
             player.setBounds(bounds);

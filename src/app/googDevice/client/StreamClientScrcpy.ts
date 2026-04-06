@@ -1,4 +1,5 @@
 import { BaseClient } from '../../client/BaseClient';
+import { CuaDashboard } from '../../ui/CuaDashboard';
 import { ParamsStreamScrcpy } from '../../../types/ParamsStreamScrcpy';
 import { GoogMoreBox } from '../toolbox/GoogMoreBox';
 import { GoogToolBox } from '../toolbox/GoogToolBox';
@@ -325,7 +326,7 @@ export class StreamClientScrcpy
         player.setParent(video);
         player.pause();
 
-        document.body.appendChild(deviceView);
+        CuaDashboard.getContentRoot().appendChild(deviceView);
         if (fitToScreen) {
             const newBounds = this.getMaxSize();
             if (newBounds) {

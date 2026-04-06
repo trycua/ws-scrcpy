@@ -1,5 +1,6 @@
 import 'xterm/css/xterm.css';
 import { ManagerClient } from '../../client/ManagerClient';
+import { CuaDashboard } from '../../ui/CuaDashboard';
 import { Terminal } from 'xterm';
 import { AttachAddon } from 'xterm-addon-attach';
 import { FitAddon } from 'xterm-addon-fit';
@@ -94,7 +95,7 @@ export class ShellClient extends ManagerClient<ParamsShell, never> {
             container = document.createElement('div');
             container.className = 'terminal-container';
             container.id = udid;
-            document.body.appendChild(container);
+            CuaDashboard.getContentRoot().appendChild(container);
         }
         return container;
     }

@@ -1,4 +1,5 @@
 import '../../../style/filelisting.css';
+import { CuaDashboard } from '../../ui/CuaDashboard';
 import { ParamsFileListing } from '../../../types/ParamsFileListing';
 import { ManagerClient } from '../../client/ManagerClient';
 import GoogDeviceDescriptor from '../../../types/GoogDeviceDescriptor';
@@ -99,7 +100,7 @@ export class FileListingClient extends ManagerClient<ParamsFileListing, never> i
     private channels: Set<Multiplexer> = new Set();
     constructor(params: ParamsFileListing) {
         super(params);
-        this.parent = document.body;
+        this.parent = CuaDashboard.getContentRoot();
         this.serial = this.params.udid;
         this.path = this.params.path;
         this.openNewConnection();

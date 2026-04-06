@@ -1,4 +1,5 @@
 import '../../../style/dialog.css';
+import { CuaDashboard } from '../../ui/CuaDashboard';
 import GoogDeviceDescriptor from '../../../types/GoogDeviceDescriptor';
 import { DisplayCombinedInfo } from '../../client/StreamReceiver';
 import VideoSettings from '../../VideoSettings';
@@ -565,12 +566,12 @@ export class ConfigureScrcpy extends BaseClient<ParamsStreamScrcpy, ConfigureScr
         dialogContainer.appendChild(dialogFooter);
         background.appendChild(dialogContainer);
         background.addEventListener('click', this.onBackgroundClick);
-        document.body.appendChild(background);
+        CuaDashboard.getContentRoot().appendChild(background);
         return background;
     }
 
     private removeUI(): void {
-        document.body.removeChild(this.background);
+        CuaDashboard.getContentRoot().removeChild(this.background);
         this.okButton?.removeEventListener('click', this.openStream);
         // this.cancelButton?.removeEventListener('click', this.cancel);
         this.resetSettingsButton?.removeEventListener('click', this.resetSettings);
